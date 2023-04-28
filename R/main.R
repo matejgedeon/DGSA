@@ -140,6 +140,7 @@ plotMatrixDGSA <- function(.dgsa, .hypothesis = TRUE, .method='circle', ...){
   if(.hypothesis){
     .significance <- 0.99 - apply(.dgsa$sensitivityMatrix, c(2,3), min)
     .significance[is.nan(.significance)] = 0
+    colnames(.corrMat) = rownames(.corrMat) = .dgsa$parameters #addition matejgedeon
   } else {
     .significance <- NULL
   }
@@ -232,7 +233,7 @@ if(.code == "all*"){
                               data.frame(.X, clustering = as.character(.clustering))
   )
 
-  .ggDATA$clustering <- factor(.ggDATA$clustering, levels = c(as.character(unique(.clustering)), 'prior'))
+  .ggDATA$clustering <- factor(.ggDATA$clustering, levels = c(as.character(sort(unique(.clustering))), 'prior')) #addition matejgedeon
 
   .ggDATA <- melt(.ggDATA, id = c("clustering"))
 
@@ -257,7 +258,7 @@ if(.code == "all*"){
                                   data.frame(parameter  = .X[,.paramIndex], clustering = as.character(.clustering))
       )
 
-     .ggDATA$clustering <- factor(.ggDATA$clustering, levels = c(as.character(unique(.clustering)), 'prior'))
+     .ggDATA$clustering <- factor(.ggDATA$clustering, levels = c(as.character(sort(unique(.clustering))), 'prior')) #addition matejgedeon
 
      .gg <- ggplot(.ggDATA) + stat_ecdf(aes(x=parameter, group = clustering, colour = clustering), lwd=lwd) +
             xlab(colnames(.X)[.paramIndex]) + ylab('Phi') + ylim(c(0,1)) + theme(legend.position = "top") +

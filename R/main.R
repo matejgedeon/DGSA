@@ -292,7 +292,7 @@ if(.code == "all*"){
                                        )
       )
 
-      .ggDATA$bin <- factor(.ggDATA$bin, levels = c(unique(.binning), 'cluster_prior'))
+      .ggDATA$bin <- factor(.ggDATA$bin, levels = c(sort(unique(.binning)), 'cluster_prior'))
 
       .gg <- ggplot(.ggDATA) + stat_ecdf(aes(x=parameter, group = bin, colour = bin), lwd=lwd) +
              xlab(.code) + ylab('Phi') + ylim(c(0,1)) + theme(legend.position = "top") +

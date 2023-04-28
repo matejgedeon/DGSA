@@ -140,7 +140,11 @@ plotMatrixDGSA <- function(.dgsa, .hypothesis = TRUE, .method='circle', ...){
   if(.hypothesis){
     .significance <- 0.99 - apply(.dgsa$sensitivityMatrix, c(2,3), min)
     .significance[is.nan(.significance)] = 0
+<<<<<<< HEAD
     colnames(.significance) = rownames(.significance) = .dgsa$parameters #addition matejgedeon
+=======
+    colnames(.corrMat) = rownames(.corrMat) = .dgsa$parameters #addition matejgedeon
+>>>>>>> 7a3072295f64a7828e433976ee392349b2ccbf6e
   } else {
     .significance <- NULL
   }

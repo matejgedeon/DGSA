@@ -186,16 +186,35 @@ plotParetoDGSA <- function(.dgsa, .clusters = FALSE, .interaction = NULL, .hypot
 
   .ggDATA$parameters <- .dgsa$parameters
 
+  if(!.clusters){
+    .ggDATA <- .ggDATA[,c("parameters","mean")]
+  }
+
+
   # order by mean:
   .ggDATA <- .ggDATA[order(.ggDATA$mean), ]
   .levels <- .ggDATA$parameters
 
-  .ggDATA <- melt(.ggDATA, id=c("parameters"))
+  .ggDATA <- reshape2::melt(.ggDATA, id=c("parameters"))
   .ggDATA$parameters <- factor(.ggDATA$parameters, levels = .levels)
 
-  .ggP <- ggplot(.ggDATA, aes(x=parameters, y = value, fill = variable)) + coord_flip() +
-    geom_bar(stat = "identity", position = "dodge", lwd = 0.2, colour = "black") +
-    theme(legend.position="bottom") + geom_hline(yintercept = ifelse(.hypothesis, 1, NULL)) + ggtitle(.plotTitle)
+  if(.clusters){
+    .ggP <- ggplot2::ggplot(.ggDATA,
+                            ggplot2::aes(x=parameters, y = value, fill = variable)) +
+      ggplot2::coord_flip() +
+      ggplot2::geom_bar(stat = "identity", position = "dodge", lwd = 0.2, colour = "black") +
+      ggplot2::theme(legend.position="bottom") +
+      ggplot2::geom_hline(yintercept = ifelse(.hypothesis, 1, NULL)) +
+      ggplot2::ggtitle(.plotTitle)
+  } else {
+    .ggP <- ggplot2::ggplot(.ggDATA,
+                            ggplot2::aes(x=parameters, y = value)) +
+      ggplot2::coord_flip() +
+      ggplot2::geom_bar(stat = "identity", position = "dodge", lwd = 0.2, colour = "black") +
+      ggplot2::theme(legend.position="bottom") +
+      ggplot2::geom_hline(yintercept = ifelse(.hypothesis, 1, NULL)) +
+      ggplot2::labs(title=.plotTitle)
+  }
 
 if(.ggReturn){
   return(.ggP)
